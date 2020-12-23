@@ -23,9 +23,7 @@ public class ReloadCommand extends Command {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPerm));
         } else {
             plugin.reload();
-            if (sender instanceof ProxiedPlayer) {
-                sender.sendMessage(ChatColor.GREEN + "Plugin reloaded.");
-            }
+            if (sender instanceof ProxiedPlayer) sender.sendMessage(ChatColor.GREEN + "Plugin reloaded.");
         }
     }
 }

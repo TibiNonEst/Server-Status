@@ -72,9 +72,7 @@ public final class ServerStatus extends Plugin {
 
     private void loadConfig() {
         try {
-            if (!getDataFolder().exists()) {
-                getDataFolder().mkdir();
-            }
+            if (!getDataFolder().exists()) getDataFolder().mkdir();
             File config = new File(getDataFolder().getPath(), "config.yml");
             if (!config.exists()) {
                 try {

@@ -22,9 +22,7 @@ public class PlayerEvents implements Listener {
     public void onPlayerJoin(PostLoginEvent event) {
         ArrayList players = getPlayerNames(ProxyServer.getInstance().getPlayers());
         String player = event.getPlayer().getDisplayName();
-        if (!players.contains(player)) {
-            players.add(player);
-        }
+        if (!players.contains(player)) players.add(player);
         socket.emit("change", players);
     }
 
@@ -32,9 +30,7 @@ public class PlayerEvents implements Listener {
     public void onPlayerLeave(PlayerDisconnectEvent event) {
         ArrayList players = getPlayerNames(ProxyServer.getInstance().getPlayers());
         String player  = event.getPlayer().getDisplayName();
-        if (players.contains(player)) {
-            players.remove(player);
-        }
+        if (players.contains(player)) players.remove(player);
         socket.emit("change", players);
     }
 
@@ -44,9 +40,7 @@ public class PlayerEvents implements Listener {
 
     private ArrayList getPlayerNames(Collection<ProxiedPlayer> input) {
         ArrayList players = new ArrayList();
-        for (ProxiedPlayer player : input) {
-            players.add(player.getDisplayName());
-        }
+        for (ProxiedPlayer player : input) players.add(player.getDisplayName());
         return players;
     }
 }
