@@ -11,7 +11,7 @@ The basis of this project is on a web server. This web server runs socket.io, a 
 The frontend of this site dynamically displays the information it recives from the webserver. It has a small indicator, either red or green, to display the current status of the minecraft server. Additionally it showes the player count of people online and lists their avatars *(you can view their names on hover)*. There is also a simple text-only version of the site that dynamically updates at `/simple` and an api which returns the current status statically at `/api`.
 
 ### Installation
-To install this webserver it's required that you have node.js and npm installed on your system. Unzip the `node.zip` file in the most recent release and add it to the directory you want to run the webserver in. To install all required dependencies run `npm install` in the node folder, and to start it run `npm start`!
+To install this webserver it's required that you have node.js and npm installed on your system. Unzip the `ServerStatus-Node-version.zip` file in the most recent release and add it to the directory you want to run the webserver in. To install all required dependencies run `npm install` in the node folder, and to start it run `npm start`!
 
 ### Configuration
 Don't want your web server running on the default port? No problem! The configuration file located at `config.yml` lets you customize which port your server runs at in the `port` field. It also allows you to add a custom name for your site visible in the title of the webpage as well as in the header in the middle with the `name` field. As this plugin doesn't currenrly query your server for its max player count, set the visible max players of your server in `max_players`. Finally, if you don't want the background of your site to be play, set a background image in the `background_img` field! To get your changes to take effect, restart the webserver with `npm start`.
@@ -41,7 +41,7 @@ The plugin currently only has one command: `/reload`. The permission for this is
 **Note: The `/reload` command does not currently work as expected, this is being investigated, but if you need to reload your socket.io connected and `/reload` doesn't work restart the server**
 
 ### Installation
-The bungeecord and spigot plugins are installed like any other plugin, just add them to your plugin folder and you're good to go!
+The bungeecord and spigot plugins are installed like any other plugin, just add them to your plugin folder and you're good to go! You can download the plugin in the releases tab.
 
 ### Configuration
 All of the configuration is contained within the `config.yml` file. In here you should set the `address` field to you're web server address and the `port` field to your web server port. The `no-permission` field is what will be show when someone tries to run the `/reload` command without proper perms.
@@ -63,10 +63,10 @@ messages:
 The discord runs on a discord server changing the names and descriptions of channels as people leave and join the server. The bot can change the titles of 2 voice channels, it's reccomended that these are restricted for best use, to display the current status of the server and player count. The bot also dynamically changes the descriptions of any provided text channels to display the status and player count, in addition to listing players online.
 
 ### Installation
-The install for the discord bot is similar to the webserver. Download the `bot.zip` file from the most recent release, unzip it where you want it to run, run `npm install` in the folder to install the dependencies, and `npm start` to start it! To get it onto your server you can use this guide[https://www.howtogeek.com/364225/how-to-make-your-own-discord-bot/] from How To Geek.
+The install for the discord bot is similar to the webserver. Download the `ServerStatus-Bot-version.zip` file from the most recent release, unzip it where you want it to run, run `npm install` in the folder to install the dependencies, and `npm start` to start it! To get it onto your server you can use ~[this guide](https://www.howtogeek.com/364225/how-to-make-your-own-discord-bot/) from How To Geek.
 
 ### Configuration
-The `web_socket` section of this configuration is similar to the plugin. Enter in the address and port of your webserver to get socket.io to connect. The rest of the bot's setup is found in the `discord` section. In `channels` you can add the ids of the chnnels you want the bot to modify (*make sure you keep the id's in quotes*). If you don't know how to get channel id's you can follow this guide[https://www.youtube.com/watch?v=NLWtSHWKbAI] by Gauging Gadgets. Next, like the website, set the max players of your server in `max_players` as the plugin doesn't query that information. Here you can also set the status you want your bot to have and the type. The available types are `PLAYING` (Playing), `WATCHING` (Watching), and `LISTENING` (Listening to). Finally, enter the token you got from the discord developer dashboard into the `token` area, save, and restart the bot using `npm start`.
+The `web_socket` section of this configuration is similar to the plugin. Enter in the address and port of your webserver to get socket.io to connect. The rest of the bot's setup is found in the `discord` section. In `channels` you can add the ids of the chnnels you want the bot to modify (*make sure you keep the id's in quotes*). If you don't know how to get channel id's you can follow ![this guide](https://www.youtube.com/watch?v=NLWtSHWKbAI) by Gauging Gadgets. Next, like the website, set the max players of your server in `max_players` as the plugin doesn't query that information. Here you can also set the status you want your bot to have and the type. The available types are `PLAYING` (Playing), `WATCHING` (Watching), and `LISTENING` (Listening to). Finally, enter the token you got from the discord developer dashboard into the `token` area, save, and restart the bot using `npm start`.
 
 #### Default configuration:
 ```
