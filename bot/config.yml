@@ -1,0 +1,34 @@
+# Configuration for the websocket used to contact the server
+web_socket:
+  # Web server address
+  address: 'http://localhost'
+  # Web server port
+  port: 80
+
+# Discord bot settings
+discord:
+  
+  # Channel id setup
+  # Make sure to use quotes!
+  channels:
+    # Online/Offline status voice channel
+    voice_status: ''
+    # Player count voice channel
+    voice_players: ''
+    # Player count text channels
+    text:
+      - ''
+  
+  # Minecraft Server max players
+  max_players: 20
+  
+  # Discord status
+  status:
+    # Status type
+    # Options: PLAYING, WATCHING, LISTENING
+    type: 'WATCHING'
+    # Status message
+    message: 'My Minecraft Server'
+  
+  # Discord bot token
+  token: 'TOKEN'

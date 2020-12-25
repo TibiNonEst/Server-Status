@@ -1,19 +1,17 @@
-package com.nexzcore.plugins.serverstatus;
+package com.nexzcore.plugins.serverstatusbungee;
 
 import java.io.*;
 
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import net.md_5.bungee.api.ChatColor;
 import io.socket.client.Socket;
 import io.socket.client.IO;
-import io.socket.emitter.Emitter;
-import com.nexzcore.plugins.serverstatus.commands.*;
-import com.nexzcore.plugins.serverstatus.listeners.*;
+import com.nexzcore.plugins.serverstatusbungee.commands.*;
+import com.nexzcore.plugins.serverstatusbungee.listeners.*;
 
 public final class ServerStatus extends Plugin {
     private Configuration config;
@@ -32,20 +30,14 @@ public final class ServerStatus extends Plugin {
         } catch (java.net.URISyntaxException e) {
             getLogger().info(e.getMessage());
         }
-        socket.on("get players server", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                socket.emit("get players server", ProxyServer.getInstance().getPlayers());
-            }
-        });
-        socket.on("is online", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                socket.emit("online");
-            }
-        });
+        socket.on("get players server", args -> socket.emit("get players server", getProxy().getPlayers()));
+        socket.on("is online", args -> socket.emit("online"));
+        socket.on("connect", args -> getLogger().info("Socket connected!"));
+        socket.on("connect_failed", args -> getLogger().info("Socket connection failed."));
+        socket.on("disconnect", args -> getLogger().info("Socket disconnected."));
+        socket.on("error", args -> getLogger().info("Socket.io error: " + args));
         getProxy().getPluginManager().registerListener(this, new PlayerEvents(socket));
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new ReloadCommand(this, config));
+        getProxy().getPluginManager().registerCommand(this, new ReloadCommand(this, config));
     }
 
     @Override
@@ -53,7 +45,7 @@ public final class ServerStatus extends Plugin {
         // Plugin shutdown logic
         socket.emit("offline");
         socket.disconnect();
-        getLogger().info("Socket.io disconnected");
+        getLogger().info("Plugin disabled.");
     }
 
     public void reload() {
@@ -62,9 +54,9 @@ public final class ServerStatus extends Plugin {
             socket.disconnect();
             String uri = config.getString("address") + ":" + config.getInt("port");
             socket = IO.socket(uri);
-            socket.connect();
             PlayerEvents.updateSocket(socket);
-            ProxyServer.getInstance().getConsole().sendMessage(ChatColor.GREEN + "Server Status plugin reloaded.");
+            socket.connect();
+            getProxy().getConsole().sendMessage(ChatColor.GREEN + "Server Status plugin reloaded.");
         } catch (java.net.URISyntaxException e) {
             getLogger().info(e.getMessage());
         }

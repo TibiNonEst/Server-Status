@@ -1,0 +1,10 @@
+name: ${project.name}
+version: ${project.version}
+main: ${project.groupId}.serverstatusspigot.ServerStatus
+api-version: 1.13
+author: TibiNonEst
+
+commands:
+  reload:
+    description: Server Status reload command
+    usage: /serverstatus

@@ -1,6 +1,6 @@
-package com.nexzcore.plugins.serverstatus.commands;
+package com.nexzcore.plugins.serverstatusbungee.commands;
 
-import com.nexzcore.plugins.serverstatus.ServerStatus;
+import com.nexzcore.plugins.serverstatusbungee.ServerStatus;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
@@ -18,12 +18,16 @@ public class ReloadCommand extends Command {
     }
 
     public void execute(CommandSender sender, String[] args) {
-        if (sender instanceof ProxiedPlayer && !sender.hasPermission("serverstatus.reload")) {
-            String noPerm = config.getString("messages.no-permission");
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPerm));
+        if (sender instanceof ProxiedPlayer) {
+            if (sender.hasPermission("serverstatus.reload")) {
+                plugin.reload();
+                sender.sendMessage(ChatColor.GREEN + "Plugin reloaded.");
+            } else {
+                String noPerm = config.getString("messages.no-permission");
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPerm));
+            }
         } else {
             plugin.reload();
-            if (sender instanceof ProxiedPlayer) sender.sendMessage(ChatColor.GREEN + "Plugin reloaded.");
         }
     }
 }

@@ -1,4 +1,4 @@
 name: ${project.name}
 version: ${project.version}
-main: ${project.groupId}.${project.artifactId}.ServerStatus
+main: ${project.groupId}.serverstatusbungee.ServerStatus
 author: TibiNonEst

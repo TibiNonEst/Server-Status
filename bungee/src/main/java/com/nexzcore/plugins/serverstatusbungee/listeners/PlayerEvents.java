@@ -1,6 +1,5 @@
-package com.nexzcore.plugins.serverstatus.listeners;
+package com.nexzcore.plugins.serverstatusbungee.listeners;
 
-import java.util.Collection;
 import java.util.ArrayList;
 
 import net.md_5.bungee.api.plugin.Listener;
@@ -15,12 +14,12 @@ public class PlayerEvents implements Listener {
     private static Socket socket;
 
     public PlayerEvents (Socket socket) {
-        this.socket = socket;
+        PlayerEvents.socket = socket;
     }
 
     @EventHandler
     public void onPlayerJoin(PostLoginEvent event) {
-        ArrayList players = getPlayerNames(ProxyServer.getInstance().getPlayers());
+        ArrayList<String> players = getPlayerNames();
         String player = event.getPlayer().getDisplayName();
         if (!players.contains(player)) players.add(player);
         socket.emit("change", players);
@@ -28,9 +27,9 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerDisconnectEvent event) {
-        ArrayList players = getPlayerNames(ProxyServer.getInstance().getPlayers());
-        String player  = event.getPlayer().getDisplayName();
-        if (players.contains(player)) players.remove(player);
+        ArrayList<String> players = getPlayerNames();
+        String player = event.getPlayer().getDisplayName();
+        players.remove(player);
         socket.emit("change", players);
     }
 
@@ -38,9 +37,9 @@ public class PlayerEvents implements Listener {
         socket = _socket;
     }
 
-    private ArrayList getPlayerNames(Collection<ProxiedPlayer> input) {
-        ArrayList players = new ArrayList();
-        for (ProxiedPlayer player : input) players.add(player.getDisplayName());
+    private ArrayList<String> getPlayerNames() {
+        ArrayList<String> players = new ArrayList<>();
+        for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) players.add(player.getDisplayName());
         return players;
     }
 }
