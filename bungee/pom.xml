@@ -6,7 +6,7 @@
 
     <groupId>com.nexzcore.plugins</groupId>
     <artifactId>serverstatus-bungee</artifactId>
-    <version>1.0</version>
+    <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Server Status</name>
