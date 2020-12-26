@@ -11,10 +11,10 @@ public class ReloadCommand extends Command {
     private ServerStatus plugin;
     private Configuration config;
 
-    public ReloadCommand (ServerStatus plugin, Configuration config) {
+    public ReloadCommand (ServerStatus _plugin, Configuration _config) {
         super("serverstatus");
-        this.plugin = plugin;
-        this.config = config;
+        plugin = _plugin;
+        config = _config;
     }
 
     public void execute(CommandSender sender, String[] args) {

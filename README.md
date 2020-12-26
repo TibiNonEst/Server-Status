@@ -49,14 +49,14 @@ All of the configuration is contained within the `config.yml` file. In here you 
 #### Default configuration:
 ```
 # Socket.io server address
-address: "http://localhost"
+address: 'http://localhost'
 # Socket.io server port
 port: 80
 
 # Plugin messages
 messages:
   # Message to send to players if they do not have the required permission
-  no-permission: "&cYou do not have permission to execute this command."
+  no-permission: '&cYou do not have permission to execute this command.''
 ```
 
 ## Discord bot

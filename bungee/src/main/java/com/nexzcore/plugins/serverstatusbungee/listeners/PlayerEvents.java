@@ -13,8 +13,8 @@ import io.socket.client.Socket;
 public class PlayerEvents implements Listener {
     private static Socket socket;
 
-    public PlayerEvents (Socket socket) {
-        PlayerEvents.socket = socket;
+    public PlayerEvents (Socket _socket) {
+        socket = _socket;
     }
 
     @EventHandler

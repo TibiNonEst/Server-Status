@@ -1,6 +1,7 @@
 package com.nexzcore.plugins.serverstatusbungee;
 
 import java.io.*;
+import java.net.URI;
 
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -16,26 +17,25 @@ import com.nexzcore.plugins.serverstatusbungee.listeners.*;
 public final class ServerStatus extends Plugin {
     private Configuration config;
     private Socket socket;
+    private String uri;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         this.loadConfig();
-        try {
-            String uri = config.getString("address") + ":" + config.getInt("port");
-            socket = IO.socket(uri);
-            socket.connect();
-            getLogger().info("Socket.io connection initialized at " + uri);
-            socket.emit("online");
-        } catch (java.net.URISyntaxException e) {
-            getLogger().info(e.getMessage());
-        }
+        uri = config.getString("address") + ":" + config.getInt("port");
+        socket = IO.socket(URI.create(uri));
+        getLogger().info("Socket.io connection initialized at " + uri);
+        socket.connect();
+        socket.emit("online");
         socket.on("get players server", args -> socket.emit("get players server", getProxy().getPlayers()));
         socket.on("is online", args -> socket.emit("online"));
-        socket.on("connect", args -> getLogger().info("Socket connected!"));
-        socket.on("connect_failed", args -> getLogger().info("Socket connection failed."));
-        socket.on("disconnect", args -> getLogger().info("Socket disconnected."));
-        socket.on("error", args -> getLogger().info("Socket.io error: " + args));
+        socket.on(Socket.EVENT_CONNECT, args -> getLogger().info("Socket connected!"));
+        socket.on(Socket.EVENT_DISCONNECT, args -> getLogger().info("Socket disconnected."));
+        socket.on(Socket.EVENT_CONNECT_ERROR, args -> {
+            getLogger().info("Socket connection failed, attempting reconnection.");
+            socket.connect();
+        });
         getProxy().getPluginManager().registerListener(this, new PlayerEvents(socket));
         getProxy().getPluginManager().registerCommand(this, new ReloadCommand(this, config));
     }
@@ -49,17 +49,19 @@ public final class ServerStatus extends Plugin {
     }
 
     public void reload() {
-        this.loadConfig();
-        try {
-            socket.disconnect();
-            String uri = config.getString("address") + ":" + config.getInt("port");
-            socket = IO.socket(uri);
+        loadConfig();
+        String newUri = config.getString("address") + ":" + config.getInt("port");
+        if (!uri.equals(newUri)) {
+            socket.emit("offline");
+            uri = newUri;
+            socket = IO.socket(URI.create(uri));
             PlayerEvents.updateSocket(socket);
-            socket.connect();
-            getProxy().getConsole().sendMessage(ChatColor.GREEN + "Server Status plugin reloaded.");
-        } catch (java.net.URISyntaxException e) {
-            getLogger().info(e.getMessage());
+            socket.disconnect().connect();
+            socket.emit("online");
+        } else {
+            socket.disconnect().connect();
         }
+        getProxy().getConsole().sendMessage(ChatColor.GREEN + "Server Status plugin reloaded, reconnecting socket.");
     }
 
     private void loadConfig() {
