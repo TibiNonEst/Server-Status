@@ -6,7 +6,7 @@
 
     <groupId>com.nexzcore.plugins</groupId>
     <artifactId>serverstatus-spigot</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>ServerStatus</name>
