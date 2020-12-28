@@ -37,9 +37,9 @@ io.on("connection", socket => {
     current.players.online = data.length;
     current.players.list = data;
   });
-  socket.on("get players", data => {
+  socket.on("get players", () => {
     if (current.online) {
-      io.emit("get players server", data);
+      io.emit("get players server");
     } else {
       io.emit("offline");
     }
@@ -50,6 +50,8 @@ io.on("connection", socket => {
     current.players.list = data;
   });
 });
+
+if (current.online) setInterval(() => io.emit("get players server"), 5000);
 
 app.get("/", (req, res) => res.render("index", {config: config}));
 
