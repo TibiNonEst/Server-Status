@@ -38,11 +38,8 @@ io.on("connection", socket => {
     current.players.list = data;
   });
   socket.on("get players", () => {
-    if (current.online) {
-      io.emit("get players server");
-    } else {
-      io.emit("offline");
-    }
+    if (current.online) io.emit("get players server");
+    else io.emit("offline");
   });
   socket.on("get players server", data => {
     io.emit("get players", data);
@@ -51,7 +48,9 @@ io.on("connection", socket => {
   });
 });
 
-if (current.online) setInterval(() => io.emit("get players server"), 5000);
+setInterval(() => {
+  if (current.online) io.emit("get players server");
+}, 5000);
 
 app.get("/", (req, res) => res.render("index", {config: config}));
 
