@@ -1,20 +1,23 @@
-package com.nexzcore.plugins.serverstatusbungee;
+package com.nexzcore.plugins.ServerStatus;
 
 import java.io.*;
 import java.net.URI;
 
 import com.google.common.io.ByteStreams;
+import com.nexzcore.plugins.ServerStatus.bungee.commands.ReloadCommand;
+import com.nexzcore.plugins.ServerStatus.bungee.listeners.PlayerEvents;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import io.socket.client.Socket;
 import io.socket.client.IO;
-import com.nexzcore.plugins.serverstatusbungee.commands.*;
-import com.nexzcore.plugins.serverstatusbungee.listeners.*;
+import com.nexzcore.plugins.ServerStatus.bungee.commands.*;
+import com.nexzcore.plugins.ServerStatus.bungee.listeners.*;
 
-public final class ServerStatus extends Plugin {
+public final class BungeePlugin extends Plugin {
     private Configuration config;
     private Socket socket;
     private String uri;
@@ -61,7 +64,7 @@ public final class ServerStatus extends Plugin {
         } else {
             socket.disconnect().connect();
         }
-        getProxy().getConsole().sendMessage(ChatColor.GREEN + "Server Status plugin reloaded, reconnecting socket.");
+        getProxy().getConsole().sendMessage(new TextComponent(ChatColor.GREEN + "Server Status plugin reloaded, reconnecting socket."));
     }
 
     private void loadConfig() {

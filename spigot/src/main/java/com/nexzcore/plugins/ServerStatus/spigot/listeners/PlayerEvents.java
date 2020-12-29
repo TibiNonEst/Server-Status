@@ -1,4 +1,4 @@
-package com.nexzcore.plugins.serverstatusspigot.listeners;
+package com.nexzcore.plugins.ServerStatus.spigot.listeners;
 
 import java.util.ArrayList;
 

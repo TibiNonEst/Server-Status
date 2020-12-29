@@ -30,19 +30,5 @@ target/
 # MacOS DS_Store File
 .DS_Store
 
-# Node modules
-node_modules/
-
-# Node logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Node package lock
-package-lock.json
-
 # Server test folder
 test/

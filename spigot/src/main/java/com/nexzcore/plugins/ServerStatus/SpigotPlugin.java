@@ -1,4 +1,4 @@
-package com.nexzcore.plugins.serverstatusspigot;
+package com.nexzcore.plugins.ServerStatus;
 
 import java.io.*;
 import java.net.URI;
@@ -11,10 +11,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import io.socket.client.Socket;
 import io.socket.client.IO;
-import com.nexzcore.plugins.serverstatusspigot.commands.*;
-import com.nexzcore.plugins.serverstatusspigot.listeners.*;
+import com.nexzcore.plugins.ServerStatus.spigot.commands.*;
+import com.nexzcore.plugins.ServerStatus.spigot.listeners.*;
 
-public final class ServerStatus extends JavaPlugin {
+public final class SpigotPlugin extends JavaPlugin {
     private FileConfiguration config;
     private Socket socket;
     private String uri;

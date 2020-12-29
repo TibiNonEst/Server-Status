@@ -1,4 +1,4 @@
-package com.nexzcore.plugins.serverstatusbungee.listeners;
+package com.nexzcore.plugins.ServerStatus.bungee.listeners;
 
 import java.util.ArrayList;
 

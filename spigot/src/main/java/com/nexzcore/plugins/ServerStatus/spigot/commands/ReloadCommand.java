@@ -1,6 +1,6 @@
-package com.nexzcore.plugins.serverstatusspigot.commands;
+package com.nexzcore.plugins.ServerStatus.spigot.commands;
 
-import com.nexzcore.plugins.serverstatusspigot.ServerStatus;
+import com.nexzcore.plugins.ServerStatus.SpigotPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 
 public class ReloadCommand implements CommandExecutor {
-    private ServerStatus plugin;
+    private SpigotPlugin plugin;
     private FileConfiguration config;
 
-    public ReloadCommand (ServerStatus plugin, FileConfiguration config) {
+    public ReloadCommand (SpigotPlugin plugin, FileConfiguration config) {
         this.plugin = plugin;
         this.config = config;
     }
