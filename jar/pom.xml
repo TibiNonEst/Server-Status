@@ -83,5 +83,10 @@
             <artifactId>serverstatus-spigot</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.nexzcore.plugins</groupId>
+            <artifactId>serverstatus-velocity</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 
 public class ReloadCommand implements CommandExecutor {
-    private SpigotPlugin plugin;
-    private FileConfiguration config;
+    private final SpigotPlugin plugin;
+    private final FileConfiguration config;
 
     public ReloadCommand (SpigotPlugin plugin, FileConfiguration config) {
         this.plugin = plugin;
@@ -22,7 +22,7 @@ public class ReloadCommand implements CommandExecutor {
         if (sender instanceof Player) {
             if (sender.hasPermission("serverstatus.reload")) {
                 plugin.reload();
-                sender.sendMessage(ChatColor.GREEN + "Plugin reloaded.");
+                sender.sendMessage(ChatColor.GREEN + "Plugin reloaded, reconnecting socket.");
             } else {
                 String noPerm = config.getString("messages.no-permission");
                 assert noPerm != null;

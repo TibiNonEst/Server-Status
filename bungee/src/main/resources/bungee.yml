@@ -1,4 +1,4 @@
-name: ${project.parent.name}
+name: ServerStatus
 version: ${project.version}
-main: ${project.groupId}.${project.parent.name}.BungeePlugin
+main: com.nexzcore.plugins.ServerStatus.BungeePlugin
 author: TibiNonEst

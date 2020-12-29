@@ -2,9 +2,11 @@ package com.nexzcore.plugins.ServerStatus;
 
 import java.io.*;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,17 +24,13 @@ public final class SpigotPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        this.loadConfig();
-        try {
-            uri = config.getString("address") + ":" + config.getInt("port");
-            socket = IO.socket(uri);
-            getLogger().info("Socket.io connection initialized at " + uri);
-        } catch (java.net.URISyntaxException e) {
-            getLogger().info(e.getMessage());
-        }
+        loadConfig();
+        uri = config.getString("address") + ":" + config.getInt("port");
+        socket = IO.socket(URI.create(uri));
+        getLogger().info("Socket.io connection initialized at " + uri);
         socket.connect();
         socket.emit("online");
-        socket.on("get players server", args -> socket.emit("get players server", getServer().getOnlinePlayers()));
+        socket.on("get players server", args -> socket.emit("get players server", getPlayerNames()));
         socket.on("is online", args -> socket.emit("online"));
         socket.on(Socket.EVENT_CONNECT, args -> getLogger().info("Socket connected!"));
         socket.on(Socket.EVENT_DISCONNECT, args -> getLogger().info("Socket disconnected."));
@@ -40,8 +38,8 @@ public final class SpigotPlugin extends JavaPlugin {
             getLogger().info("Socket connection failed, attempting reconnection.");
             socket.connect();
         });
-        getServer().getPluginManager().registerEvents(new PlayerEvents(socket), this);
-        Objects.requireNonNull(this.getCommand("reload")).setExecutor(new ReloadCommand(this, config));
+        getServer().getPluginManager().registerEvents(new PlayerEvents(socket, this), this);
+        Objects.requireNonNull(this.getCommand("serverstatus")).setExecutor(new ReloadCommand(this, config));
     }
 
     @Override
@@ -49,7 +47,13 @@ public final class SpigotPlugin extends JavaPlugin {
         // Plugin shutdown logic
         socket.emit("offline");
         socket.disconnect();
-        getLogger().info("Socket.io disconnected");
+        getLogger().info("Plugin stopping.");
+    }
+
+    public ArrayList<String> getPlayerNames() {
+        ArrayList<String> players = new ArrayList<>();
+        for (Player player : getServer().getOnlinePlayers()) players.add(player.getDisplayName());
+        return players;
     }
 
     public void reload() {
@@ -69,16 +73,18 @@ public final class SpigotPlugin extends JavaPlugin {
     }
 
     private void loadConfig() {
-        File configFile = new File(getDataFolder(), "config.yml");
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
+        File file = new File(getDataFolder(), "config.yml");
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        if (!file.exists()) {
             saveResource("config.yml", false);
         }
         config = new YamlConfiguration();
         try {
-            config.load(configFile);
+            config.load(file);
         } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+            getLogger().warning("Unable to load config file." + e.getMessage());
         }
     }
 }

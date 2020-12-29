@@ -12,17 +12,17 @@ public class ReloadCommand extends Command {
     private final BungeePlugin plugin;
     private final Configuration config;
 
-    public ReloadCommand (BungeePlugin _plugin, Configuration _config) {
-        super("serverstatus");
-        plugin = _plugin;
-        config = _config;
+    public ReloadCommand (BungeePlugin plugin, Configuration config) {
+        super("serverstatus","bungeecord.command.server","ssr","ssreload","srvstatus","bserverstatus","bssr","bssreload","bsrvstatus");
+        this.plugin = plugin;
+        this.config = config;
     }
 
     public void execute(CommandSender sender, String[] args) {
         if (sender instanceof ProxiedPlayer) {
             if (sender.hasPermission("serverstatus.reload")) {
                 plugin.reload();
-                sender.sendMessage(new TextComponent(ChatColor.GREEN + "Plugin reloaded."));
+                sender.sendMessage(new TextComponent(ChatColor.GREEN + "Plugin reloaded, reconnecting socket."));
             } else {
                 String noPerm = config.getString("messages.no-permission");
                 sender.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', noPerm)));

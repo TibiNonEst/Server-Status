@@ -13,8 +13,8 @@ import io.socket.client.Socket;
 public class PlayerEvents implements Listener {
     private static Socket socket;
 
-    public PlayerEvents (Socket _socket) {
-        socket = _socket;
+    public PlayerEvents (Socket socket) {
+        PlayerEvents.socket = socket;
     }
 
     @EventHandler
@@ -33,8 +33,8 @@ public class PlayerEvents implements Listener {
         socket.emit("change", players);
     }
 
-    public static void updateSocket(Socket _socket) {
-        socket = _socket;
+    public static void updateSocket(Socket socket) {
+        PlayerEvents.socket = socket;
     }
 
     private ArrayList<String> getPlayerNames() {

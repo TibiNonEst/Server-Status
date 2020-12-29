@@ -11,10 +11,14 @@
 
     <name>ServerStatus</name>
 
+    <description>A Socket.io-based real-time status plugin for Minecraft servers.</description>
+    <inceptionYear>2020</inceptionYear>
+
     <modules>
         <module>common</module>
         <module>bungee</module>
         <module>spigot</module>
+        <module>velocity</module>
         <module>jar</module>
     </modules>
 
@@ -43,6 +47,12 @@
         <repository>
             <id>velocity</id>
             <url>https://nexus.velocitypowered.com/repository/velocity-artifacts-snapshots/</url>
+        </repository>
+
+        <!-- Mojang's Minecraft Libraries -->
+        <repository>
+            <id>mojang</id>
+            <url>https://libraries.minecraft.net</url>
         </repository>
     </repositories>
 

@@ -1,10 +1,14 @@
-name: ${project.parent.name}
+name: ServerStatus
 version: ${project.version}
-main: ${project.groupId}.${project.parent.name}.SpigotPlugin
+main: com.nexzcore.plugins.ServerStatus.SpigotPlugin
 api-version: 1.13
 author: TibiNonEst
 
 commands:
-  reload:
+  serverstatus:
     description: Server Status reload command
     usage: /serverstatus
+    aliases:
+      - ssr
+      - ssreload
+      - srvstatus

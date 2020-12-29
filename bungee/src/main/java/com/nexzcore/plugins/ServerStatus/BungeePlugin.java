@@ -2,10 +2,8 @@ package com.nexzcore.plugins.ServerStatus;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.file.Files;
 
-import com.google.common.io.ByteStreams;
-import com.nexzcore.plugins.ServerStatus.bungee.commands.ReloadCommand;
-import com.nexzcore.plugins.ServerStatus.bungee.listeners.PlayerEvents;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -25,7 +23,7 @@ public final class BungeePlugin extends Plugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        this.loadConfig();
+        loadConfig();
         uri = config.getString("address") + ":" + config.getInt("port");
         socket = IO.socket(URI.create(uri));
         getLogger().info("Socket.io connection initialized at " + uri);
@@ -48,7 +46,7 @@ public final class BungeePlugin extends Plugin {
         // Plugin shutdown logic
         socket.emit("offline");
         socket.disconnect();
-        getLogger().info("Plugin disabled.");
+        getLogger().info("Plugin stopping.");
     }
 
     public void reload() {
@@ -68,23 +66,21 @@ public final class BungeePlugin extends Plugin {
     }
 
     private void loadConfig() {
-        try {
-            if (!getDataFolder().exists()) getDataFolder().mkdir();
-            File config = new File(getDataFolder().getPath(), "config.yml");
-            if (!config.exists()) {
-                try {
-                    config.createNewFile();
-                    try (InputStream is = getResourceAsStream("config.yml");
-                         OutputStream os = new FileOutputStream(config)) {
-                        ByteStreams.copy(is, os);
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException("Unable to create configuration file", e);
-                }
+        File file = new File(getDataFolder(), "config.yml");
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        if (!file.exists()) {
+            try {
+                Files.copy(getResourceAsStream("config.yml"), file.toPath());
+            } catch (IOException e) {
+                getLogger().warning("Unable to load default config file. " + e.getMessage());
             }
-            this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
+        }
+        try {
+            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().warning("Unable to load config file. " + e.getMessage());
         }
     }
 }
