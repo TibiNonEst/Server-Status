@@ -1,4 +1,4 @@
-# Server Status - Plugin, Website, Discord Bot
+# Server Status - Plugin
 **A real time server status plugin**
 
 *Note: this plugin is still a WIP and very subject to change*
