@@ -3,50 +3,20 @@
 
 *Note: this plugin is still a WIP and very subject to change*
 
-## Web server/site
-### Backend
-The basis of this project is a webserver. This webserver runs *Socket.io*, a wrapper around and implementation of websockets. The webserver communicates to the plugin and web-clients to distribute real time server information. When the webserver recieves a packet from the Spigot plugin it immediately routes the information to clients on the web and on discord.
+The Bungeecord, Spigot, and Velocity plugins all use a java port of the Socket.io client. This means they can connect directly to the webserver and send real time information when the status updates. When the plugin starts it tells the web server which in turn tells the web clients that it has come online. When a player joins or leaves the server it sends the current playerlist to all the clients so that they can display the current information. All of this is done in realtime, instead of being queried every few seconds.
 
-### Frontend
-The frontend of this site dynamically displays the information it receives from the webserver. It has a small indicator, either red or green, to display the current status of the Spigot server. Additionally it shows the player count of people online and lists their avatars *(you can view their names on hover)*. There is also a simple text-only version of the site that dynamically updates at `/simple` and an api which returns the current status statically at `/api`.
-
-### Installation
-To install this webserver it's required that you have node.js and npm installed on your system. Unzip the `ServerStatus-Node-version.zip` file from the most recent release and add it to the directory you want to run the webserver in. To install all required dependencies run `npm install` in the node folder, and to start it run `npm start`!
-
-### Configuration
-Don't want your web server running on the default port? No problem! The configuration file located at `config.yml` lets you customize which port your server runs at in the `port` field. It also allows you to add a custom name for your site visible in the title of the webpage as well as in the header in the middle with the `name` field. As this plugin doesn't currenrly query your server for its max player count, set the visible max players of your server in `max_players`. Finally, if you don't want the background of your site to be play, set a background image in the `background_img` field! To get your changes to take effect, restart the webserver with `npm start`.
-
-#### Default configuration:
-```
-# Port for the web server to run at
-port: 80
-
-# Name of the site
-name: 'Minecraft Server'
-
-# Server's max players
-max_players: 20
-
-# Background image for the site (optional)
-# To remove set to ''
-background_img: ''
-```
-
-## Bungeecord / Spigot plugin
-The Bungeecord and Spigot plugins both use a java port of the Socket.io client. This means they can connect directly to the webserver and send real time information when the status updates. When the plugin starts it tells the web server which in turn tells the web clients that it has come online. When a player joins or leaves the server it sends the current playerlist to all the clients so that they can display the current information. All of this is done in realtime, instead of being queried every few seconds.
-
-### Commands and Permission
-The plugin currently only has one command: `/reload`. The permission for this is `serverstatus.reload` and it is recommended you use a permissions plugin such as luckperms. Both the Bungeecord and Spigot plugins use the same command, but this shouldn't be an issue as it's unlikely you will need to run the plugin in both your Bungeecord and Spigot servers.
+## Commands and Permission
+The plugin currently only has one command: `/reload`. The permission for this is `serverstatus.reload` and it is recommended you use a permissions plugin such as luckperms. All implementations of the plugin use the same command, but this shouldn't be an issue as it's unlikely you will need to run the plugin in both your proxy and backend servers.
 
 **Note: The `/reload` command does not currently always work as expected. While the it does disconnect and reconnect from websockets, and reload the config, there's no guarantee that the websockets will connect as expected until you restart the server.**
 
-### Installation
-The Bungeecord and spigot Plugins are installed like any other plugin, just add them to your `plugins` folder and you're good to go! You can download the plugin in the releases tab.
+## Installation
+The Bungeecord Spigot, and Velocity plugins are installed like any other plugin, just add them to your `plugins` folder and you're good to go! You can download the plugin in the releases tab.
 
-### Configuration
+## Configuration
 All of the configuration is contained within the `config.yml` file. In here you should set the `address` field to you're web server address and the `port` field to your web server port. The `no-permission` field is what will be show when someone tries to run the `/reload` command without proper perms.
 
-#### Default configuration:
+### Default configuration:
 ```
 # Socket.io server address
 address: 'http://localhost'
@@ -57,51 +27,4 @@ port: 80
 messages:
   # Message to send to players if they do not have the required permission
   no-permission: '&cYou do not have permission to execute this command.'
-```
-
-## Discord bot
-The Discord runs on a Discord server changing the names and descriptions of channels as people leave and join the server. The bot can change the titles of 2 voice channels, it's recommended that these are restricted for best use, to display the current status of the server and player count. The bot also dynamically changes the descriptions of any provided text channels to display the status and player count, in addition to listing players online.
-
-### Installation
-The install for the Discord bot is similar to the webserver. Download the `ServerStatus-Bot-version.zip` file from the most recent release, unzip it where you want it to run, run `npm install` in the folder to install the dependencies, and `npm start` to start it! To get it onto your server you can use [this guide](https://www.howtogeek.com/364225/how-to-make-your-own-discord-bot/) from How To Geek.
-
-### Configuration
-The `web_socket` section of this configuration is similar to the plugin. Enter in the address and port of your webserver to get Socket.io to connect. The rest of the bot's setup is found in the `discord` section. In `channels` you can add the ids of the channels you want the bot to modify (*make sure you keep the id's in quotes*). If you don't know how to get channel id's you can follow [this guide](https://www.youtube.com/watch?v=NLWtSHWKbAI) by Gauging Gadgets. Next, like the website, set the max players of your server in `max_players` as the plugin doesn't query that information. Here you can also set the status you want your bot to have and the type. The available types are `PLAYING` (Playing), `WATCHING` (Watching), and `LISTENING` (Listening to). Finally, enter the token you got from the Discord developer dashboard into the `token` area, save, and restart the bot.
-
-#### Default configuration:
-```
-# Configuration for the websocket used to contact the server
-web_socket:
-  # Web server address
-  address: 'http://localhost'
-  # Web server port
-  port: 80
-
-# Discord bot settings
-discord:
-  
-  # Channel id setup
-  # Make sure to use quotes!
-  channels:
-    # Online/Offline status voice channel
-    voice_status: ''
-    # Player count voice channel
-    voice_players: ''
-    # Player count text channels
-    text:
-      - ''
-  
-  # Minecraft Server max players
-  max_players: 20
-  
-  # Discord status
-  status:
-    # Status type
-    # Options: PLAYING, WATCHING, LISTENING
-    type: 'WATCHING'
-    # Status message
-    message: 'My Minecraft Server'
-  
-  # Discord bot token
-  token: 'TOKEN'
 ```
